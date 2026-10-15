@@ -37,9 +37,14 @@ const THUMB: Record<Exclude<ThumbPose, 'toca'>, [Pt, Pt, Pt]> = {
   dentro: [v(0.034, -0.045, -0.02), v(0.03, -0.07, -0.03), v(0.024, -0.085, -0.028)],
 };
 
+/** Para onde a palma está virada (orientação, um dos parâmetros do sinal). */
+export type Palma = 'frente' | 'tras' | 'lado' | 'baixo' | 'cima';
+
 export interface PoseOptions {
-  /** Sobrescreve a flexão do indicador (usado na animação do X). */
+  /** Sobrescreve a flexão do indicador (usado na animação do X e no "gancho"). */
   indexFlex?: [number, number, number];
+  /** Orientação da palma. Padrão: 'frente' (virada para quem vê). */
+  palma?: Palma;
 }
 
 export function buildPose(shape: HandShape, opts: PoseOptions = {}): Pt[] {
@@ -54,6 +59,8 @@ export function buildPose(shape: HandShape, opts: PoseOptions = {}): Pt[] {
     spreads[0] = 0.24;
     spreads[1] = shape.anelar === 'estendido' ? 0 : -0.1;
     spreads[2] = -0.24;
+    // Mão aberta "5": o mínimo também abre, além do anelar.
+    if (shape.minimo === 'estendido') spreads[3] = -0.45;
   }
   if (shape.cruzados) {
     // Indicador passa por cima (na frente) do médio.
@@ -86,20 +93,38 @@ export function buildPose(shape: HandShape, opts: PoseOptions = {}): Pt[] {
     [pts[2], pts[3], pts[4]] = THUMB[shape.polegar];
   }
 
-  return orient(pts, shape.direcao);
+  return orient(pts, shape.direcao, opts.palma);
 }
 
-function orient(pts: Pt[], direcao: HandShape['direcao']): Pt[] {
-  switch (direcao) {
+/**
+ * Orientação em duas etapas: primeiro gira a palma em torno do eixo
+ * comprido da mão (y), depois aponta os dedos. Palma para cima/baixo só faz
+ * sentido com os dedos para a frente ou para o lado; com os dedos para
+ * cima, tratamos como "frente".
+ */
+function orient(pts: Pt[], direcao: HandShape['direcao'], palma: Palma = 'frente'): Pt[] {
+  let r = pts;
+  if (palma === 'tras' || palma === 'cima') r = r.map((p) => rotY(p, Math.PI));
+  if (palma === 'lado') r = r.map((p) => rotY(p, Math.PI / 2));
+  const deitada = palma === 'baixo' || palma === 'cima';
+  const dir = deitada && direcao === 'cima' ? 'frente' : direcao;
+  switch (dir) {
     case 'baixo':
-      return pts.map((p) => rotZ(p, Math.PI));
+      r = r.map((p) => rotZ(p, Math.PI));
+      break;
     case 'lado':
-      return pts.map((p) => rotZ(p, -Math.PI / 2));
+      // +x no mundo vira "para o meio do corpo" na vista de espelho.
+      r = r.map((p) => rotZ(p, Math.PI / 2));
+      if (deitada) r = r.map((p) => rotX(p, Math.PI / 2));
+      break;
     case 'frente':
-      return pts.map((p) => rotX(p, Math.PI / 2.2));
-    default:
-      return pts;
+      r = r.map((p) => rotX(p, deitada ? Math.PI / 2 : Math.PI / 2.2));
+      break;
+    case 'tras':
+      r = r.map((p) => rotX(p, -Math.PI / 2.2));
+      break;
   }
+  return r;
 }
 
 /* ─── Animação do movimento (tutorial) ─────────────────────────────────── */

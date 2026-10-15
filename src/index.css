@@ -200,3 +200,27 @@ h3 { font: 700 20px/1.2 var(--font-display); display: flex; align-items: center;
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* Cena do busto (Português → Libras) */
+.sign-stage { width: min(100%, 440px); aspect-ratio: 400 / 440; }
+.body { fill: #24584e; }
+.body-detail { fill: #0f2f29; }
+.body-line { fill: none; stroke: #0f2f29; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.toque { fill: none; stroke: var(--sun); stroke-width: 3; }
+.tutorial-gloss { position: absolute; top: 12px; left: 16px; font: 800 30px/1 var(--font-display); color: var(--sun); letter-spacing: 0.03em; }
+.glosa { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.glosa-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-right: 4px; }
+.gloss-item { border: 1px solid var(--line); background: var(--bg-2); padding: 6px 10px; border-radius: 10px; font: 700 15px var(--font-body); letter-spacing: 0.04em; cursor: pointer; }
+.gloss-item.sinal { border-color: rgba(255, 209, 102, 0.45); }
+.gloss-item.soletrar { font-family: var(--font-display); }
+.gloss-item.omitido { text-decoration: line-through; color: var(--muted); background: transparent; border-style: dashed; cursor: help; font-weight: 500; letter-spacing: 0; }
+.gloss-item.active { background: var(--sun); color: var(--sun-ink); border-color: var(--sun); }
+.gloss-q { font: 800 20px var(--font-display); color: var(--sun); }
+.params { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 14.5px; }
+.params dt { color: var(--muted); }
+.params dd { gap: 6px; }
+.param-hand { width: 34px; height: 34px; background: var(--bg-2); border-radius: 8px; }
+.badge-warn { color: var(--err); border-color: rgba(255, 138, 122, 0.4); }
+.notas { display: flex; flex-direction: column; gap: 6px; padding-left: 18px; font-size: 14px; color: var(--text-2); }
+.video-real { display: flex; flex-direction: column; gap: 6px; }
+.video-real video { width: 100%; border-radius: 12px; background: #000; aspect-ratio: 4 / 3; object-fit: cover; }

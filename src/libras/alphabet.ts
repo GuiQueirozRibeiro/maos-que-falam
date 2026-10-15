@@ -25,8 +25,12 @@ export type FingerState = 'estendido' | 'curvado' | 'dobrado';
  */
 export type ThumbPose = 'aberto' | 'lado' | 'sobre' | 'toca' | 'oposto' | 'entre' | 'dentro';
 
-/** Para onde apontam os dedos principais (ou a mão, se estiver fechada). */
-export type Direction = 'cima' | 'baixo' | 'frente' | 'lado';
+/**
+ * Para onde apontam os dedos principais (ou a mão, se estiver fechada).
+ * 'lado' = atravessando o corpo, rumo ao meio; 'tras' = para quem sinaliza
+ * (só aparece em sinais, ex.: EU).
+ */
+export type Direction = 'cima' | 'baixo' | 'frente' | 'lado' | 'tras';
 
 export type Movement =
   | 'nenhum'

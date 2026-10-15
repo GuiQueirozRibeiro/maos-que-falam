@@ -78,7 +78,7 @@ export default function App() {
 
       <main>
         {aba === 'sinais' && <SinaisParaVoz />}
-        {aba === 'portugues' && <PortuguesParaLibras espelhar={espelhar} />}
+        {aba === 'portugues' && <PortuguesParaLibras canhoto={canhoto} />}
         {aba === 'aprender' && <Aprender espelhar={espelhar} />}
       </main>
 

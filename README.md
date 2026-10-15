@@ -5,7 +5,7 @@ Tradutor educativo de **Libras** que roda inteiro no navegador. Nenhuma imagem s
 | Modo | O que faz |
 |---|---|
 | **Sinais → Voz** | Você soletra com o alfabeto manual na câmera, o texto vai se formando e é falado em pt-BR |
-| **Português → Libras** | Você digita uma frase e vê um tutorial animado, letra a letra (datilologia), mais o avatar oficial **VLibras** para frases com gramática de Libras |
+| **Português → Libras** | Você digita uma frase e ela vira glosa de Libras (`Meu nome é Ana` → `MEU NOME A-N-A`). Cada sinal é animado num busto, com local, palma e movimento, e tem link para o vídeo real do INES. Nomes e palavras fora do dicionário são soletrados. O avatar **VLibras** cobre a gramática completa |
 | **Aprender** | Alfabeto ilustrado com as 27 letras, prática com medidor de acerto, modo desafio e calibração pessoal |
 
 ## Rodar
@@ -27,13 +27,23 @@ src/libras/
   features.ts    worldLandmarks → traços medidos (invariantes a rotação, escala e mão)
   classifier.ts  regras suaves + kNN da calibração pessoal
   motion.ts      letras com movimento (H J K X Z Ç) pela trajetória
-  speller.ts     fluxo de detecções → letras confirmadas → palavras
+  speller.ts     fluxo de detecções → letras confirmadas → palavras (letra dobrada = deslize lateral)
+  sinais.ts      dicionário de sinais (33), conferido nos vídeos do INES e do Signbank UFSC
+  traducao.ts    português → glosa (omite artigos/preposições/"ser", COMO vai para o fim da pergunta)
+  cena.ts        passos do tutorial → quadros (busto + mãos posicionadas por local/trajeto)
 src/speech/      Web Speech API (pt-BR)
 ```
 
 A especificação de cada letra em `alphabet.ts` alimenta o reconhecimento, o desenho e os testes.
 Para corrigir uma letra, mude esse arquivo: o teste `classifier.test.ts` confere se a pose
 desenhada continua sendo reconhecida como ela mesma.
+
+## Dicionário de sinais
+
+Cada sinal em `sinais.ts` segue os parâmetros da fonologia da Libras: configuração de mão,
+ponto de articulação, orientação da palma, movimento e expressão. Só entram sinais conferidos
+em fonte pública. Na dúvida, a palavra fica fora e é soletrada. Ficaram de fora por divergência
+entre fontes: TUDO BEM, DIA, TARDE, ONDE, QUAL e PRAZER.
 
 ## Limitações (honestas)
 

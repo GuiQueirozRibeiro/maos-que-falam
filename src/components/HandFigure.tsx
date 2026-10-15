@@ -45,9 +45,14 @@ interface Props {
   espelhar?: boolean;
   className?: string;
   title?: string;
+  /** Posição/tamanho quando aninhado dentro de outro SVG (cena do busto). */
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
 }
 
-export function HandFigure({ pts, frame, espelhar = true, className, title }: Props) {
+export function HandFigure({ pts, frame, espelhar = true, className, title, x, y, width, height }: Props) {
   const f = frame ?? frameFor(pts);
   const sx = espelhar ? -1 : 1;
   const P = (p: Pt) => {
@@ -106,6 +111,11 @@ export function HandFigure({ pts, frame, espelhar = true, className, title }: Pr
   return (
     <svg
       className={className}
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      overflow="visible"
       viewBox={`${-h} ${-h} ${f.size} ${f.size}`}
       role="img"
       aria-label={title}
