@@ -20,24 +20,25 @@ export interface ConfirmContext {
   ultimaConfirmada: string | null;
   /** Desde a última confirmação, a mão mudou de forma ou saiu do quadro? */
   soltouDesdeUltima: boolean;
+  /** A mão acabou de deslizar para o lado mantendo a forma. */
+  deslizouLateral: boolean;
 }
 
 /**
  * Decide se o candidato atual vira letra.
  *
- * O caso difícil são LETRAS DOBRADAS ("CARRO", "OSSO", "ANNA"): em Libras a
- * letra repetida costuma ser feita com um pequeno deslize lateral da mão,
- * sem desfazer a forma. Do jeito que está, segurar "R" produz um R só, e
- * para repetir é preciso desfazer a forma e refazer.
+ * LETRAS DOBRADAS ("CARRO", "OSSO", "ANNA"): em Libras a letra repetida é
+ * feita com um pequeno deslize lateral da mão, sem desfazer a forma. Então:
+ *  - letra nova (ou mão que soltou e voltou) → confirma após HOLD_MS;
+ *  - mesma letra com a mão parada → nunca repete (segurar não duplica);
+ *  - mesma letra + deslize lateral → repete na hora (o deslize já é a
+ *    intenção explícita, não precisa esperar HOLD_MS de novo).
  */
 export function deveConfirmar(ctx: ConfirmContext): boolean {
-  if (ctx.confianca < MIN_CONFIDENCE || ctx.heldMs < HOLD_MS) return false;
-  if (ctx.candidato !== ctx.ultimaConfirmada || ctx.soltouDesdeUltima) return true;
-  // TODO(Guilherme): política para letra repetida sem soltar a mão.
-  // Opções: (a) segurar 2× HOLD_MS repete a letra;
-  //         (b) nunca repetir sem soltar (atual — mais previsível);
-  //         (c) exigir o deslize lateral (precisa de dado de movimento aqui).
-  return false;
+  if (ctx.confianca < MIN_CONFIDENCE) return false;
+  const repetida = ctx.candidato === ctx.ultimaConfirmada && !ctx.soltouDesdeUltima;
+  if (repetida) return ctx.deslizouLateral;
+  return ctx.heldMs >= HOLD_MS;
 }
 
 export type SpellerEvent = { tipo: 'letra'; letra: string } | { tipo: 'palavra'; palavra: string };
@@ -55,7 +56,12 @@ export class Speller {
   private confirmadoNesteHold = false;
 
   /** Uma chamada por quadro. `id` = forma estática (ou null se ausente/baixa confiança). */
-  update(det: { id: string; score: number } | null, letraMovimento: string | null, now: number): SpellerEvent[] {
+  update(
+    det: { id: string; score: number } | null,
+    letraMovimento: string | null,
+    now: number,
+    deslize = false,
+  ): SpellerEvent[] {
     const ev: SpellerEvent[] = [];
 
     if (letraMovimento) {
@@ -87,15 +93,18 @@ export class Speller {
     const heldMs = now - this.desde;
     this.progresso = soletravel && !this.confirmadoNesteHold ? Math.min(1, heldMs / HOLD_MS) : 0;
 
+    // Depois de confirmada, a letra só volta a ser avaliada se houver
+    // deslize (pedido de letra dobrada).
     if (
       soletravel &&
-      !this.confirmadoNesteHold &&
+      (!this.confirmadoNesteHold || deslize) &&
       deveConfirmar({
         candidato: det.id,
         heldMs,
         confianca: det.score,
         ultimaConfirmada: this.ultimaConfirmada,
         soltouDesdeUltima: this.soltou,
+        deslizouLateral: deslize,
       })
     ) {
       ev.push(...this.confirmar(det.id));

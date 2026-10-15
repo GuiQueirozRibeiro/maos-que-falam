@@ -16,6 +16,8 @@ export interface Recognition {
   movimento: string | null;
   /** Texto para mostrar ("A", "H ou K — faça o movimento"). */
   rotulo: string;
+  /** Deslize lateral mantendo a forma (pedido de letra dobrada). */
+  deslize: boolean;
 }
 
 const MIN_SCORE = 0.62;
@@ -66,7 +68,16 @@ export class Recognizer {
       }
     }
 
+    // Letra dobrada: deslize lateral com a forma parada. Só formas que já são
+    // letra (não HK/XZ, cujo deslocamento pertence ao K/Z).
+    let deslize = false;
+    if (!movimento && top && top.id.length === 1 && now > this.cooldownAte && this.motion.deslizeLateral(top.id)) {
+      deslize = true;
+      this.motion.reset();
+      this.cooldownAte = now + 500;
+    }
+
     const rotulo = movimento ?? (top ? (ROTULO_BASE[top.id] ?? top.id) : '');
-    return { top, ranking, features, movimento, rotulo };
+    return { top, ranking, features, movimento, rotulo, deslize };
   }
 }

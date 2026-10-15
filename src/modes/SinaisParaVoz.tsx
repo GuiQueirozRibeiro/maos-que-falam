@@ -31,19 +31,21 @@ export function SinaisParaVoz() {
     r.setAspect(aspect);
     let det: { id: string; score: number } | null = null;
     let movimento: string | null = null;
+    let deslize = false;
     let rotulo = '';
     let top3: Hud['top3'] = [];
     if (hand) {
       const rec = r.process(hand, now);
       det = rec.top;
       movimento = rec.movimento;
+      deslize = rec.deslize;
       rotulo = rec.rotulo;
       top3 = rec.ranking.slice(0, 3);
     } else {
       r.reset();
     }
 
-    const events = speller.current.update(det, movimento, now);
+    const events = speller.current.update(det, movimento, now, deslize);
     for (const e of events) {
       if (e.tipo === 'letra' && opts.current.falarLetras) falar(nomeDaLetra(e.letra));
       if (e.tipo === 'palavra' && opts.current.falarPalavras) falar(e.palavra.toLowerCase());
@@ -82,7 +84,7 @@ export function SinaisParaVoz() {
           </CameraStage>
           <p className="muted small">
             Segure cada letra até o anel fechar. Tire a mão da câmera por {(GAP_MS / 1000).toLocaleString('pt-BR')} s para terminar a palavra.
-            Para repetir uma letra (como em "CARRO"), desfaça a forma e faça de novo.
+            Para letra dobrada (como o RR de "CARRO"), mantenha a forma e deslize a mão um pouco para o lado.
           </p>
         </div>
 

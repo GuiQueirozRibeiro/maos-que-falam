@@ -37,6 +37,23 @@ export class MotionTracker {
     this.frames = [];
   }
 
+  /**
+   * Deslize lateral curto mantendo a forma `base` — é assim que se faz
+   * letra dobrada em Libras ("CARRO": o R desliza para o lado). Olha só os
+   * últimos ~450 ms: deslocamento horizontal ≥ 0,4 palma, quase sem
+   * deslocamento vertical, e a forma não mudou no caminho.
+   */
+  deslizeLateral(base: string): boolean {
+    const fim = this.frames[this.frames.length - 1];
+    if (!fim) return false;
+    const recentes = this.frames.filter((f) => f.t >= fim.t - 450);
+    if (recentes.length < 5 || recentes.some((f) => f.base !== base)) return false;
+    const ruler = median(recentes.map((f) => f.palmLen)) || 1;
+    const dx = Math.abs(fim.wrist.x - recentes[0].wrist.x) / ruler;
+    const dy = Math.abs(fim.wrist.y - recentes[0].wrist.y) / ruler;
+    return dx >= 0.4 && dy < dx * 0.5;
+  }
+
   /** Devolve a letra de movimento reconhecida (ou null). */
   detect(): string | null {
     const fr = this.frames;
