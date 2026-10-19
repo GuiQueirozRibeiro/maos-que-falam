@@ -58,3 +58,13 @@ entre fontes: TUDO BEM, DIA, TARDE, ONDE, QUAL e PRAZER.
 
 `public/v1.0.1/` foi copiado do gesture-synth-weld e tem cache immutable de 1 ano. Ao atualizar,
 crie `public/vX.Y.Z/` novo e mude o caminho em `src/vision/handTracker.ts`. Nunca sobrescreva o diretório antigo.
+
+## Licença e créditos
+
+MIT. Veja `LICENSE`. O pipeline de câmera foi adaptado do
+[gesture-synth-weld](https://github.com/rainbow686/gesture-synth-weld) (MIT), e o modelo de mãos é do
+MediaPipe (Apache-2.0). Os sinais foram conferidos no Dicionário de Libras do INES e no Signbank da UFSC.
+Detalhes em `THIRD_PARTY_NOTICES.md`.
+
+Correções sobre os sinais são muito bem-vindas, principalmente de pessoas surdas e de intérpretes:
+abra uma issue indicando a fonte.
