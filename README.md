@@ -7,6 +7,7 @@ Tradutor educativo de **Libras** que roda inteiro no navegador. Nenhuma imagem s
 | **Sinais → Voz** | Você soletra com o alfabeto manual na câmera, o texto vai se formando e é falado em pt-BR |
 | **Português → Libras** | Você digita uma frase e ela vira glosa de Libras (`Meu nome é Ana` → `MEU NOME A-N-A`). Cada sinal é animado num busto, com local, palma e movimento, e tem link para o vídeo real do INES. Nomes e palavras fora do dicionário são soletrados. O avatar **VLibras** cobre a gramática completa |
 | **Aprender** | Alfabeto ilustrado com as 27 letras, prática com medidor de acerto, modo desafio e calibração pessoal |
+| **Dicionário** | Os 34 sinais com busca, animação, ficha (configuração, local, palma, movimento) e vídeo real do INES |
 
 ## Rodar
 
@@ -28,7 +29,7 @@ src/libras/
   classifier.ts  regras suaves + kNN da calibração pessoal
   motion.ts      letras com movimento (H J K X Z Ç) pela trajetória
   speller.ts     fluxo de detecções → letras confirmadas → palavras (letra dobrada = deslize lateral)
-  sinais.ts      dicionário de sinais (33), conferido nos vídeos do INES e do Signbank UFSC
+  sinais.ts      dicionário de sinais (34), conferido nos vídeos do INES e do Signbank UFSC
   traducao.ts    português → glosa (omite artigos/preposições/"ser", COMO vai para o fim da pergunta)
   cena.ts        passos do tutorial → quadros (busto + mãos posicionadas por local/trajeto)
 src/speech/      Web Speech API (pt-BR)

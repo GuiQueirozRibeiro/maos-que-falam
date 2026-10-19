@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Aprender } from './modes/Aprender';
+import { Dicionario } from './modes/Dicionario';
 import { PortuguesParaLibras } from './modes/PortuguesParaLibras';
 import { SinaisParaVoz } from './modes/SinaisParaVoz';
 
-type Aba = 'sinais' | 'portugues' | 'aprender';
+type Aba = 'sinais' | 'portugues' | 'aprender' | 'dicionario';
 
 const ABAS: { id: Aba; titulo: string; sub: string }[] = [
   { id: 'sinais', titulo: 'Sinais → Voz', sub: 'Soletre na câmera e ouça' },
   { id: 'portugues', titulo: 'Português → Libras', sub: 'Digite e veja como sinalizar' },
   { id: 'aprender', titulo: 'Aprender', sub: 'Pratique o alfabeto' },
+  { id: 'dicionario', titulo: 'Dicionário', sub: 'Veja os sinais' },
 ];
 
 const lerAba = (): Aba => {
@@ -77,9 +80,12 @@ export default function App() {
       </nav>
 
       <main>
-        {aba === 'sinais' && <SinaisParaVoz />}
-        {aba === 'portugues' && <PortuguesParaLibras canhoto={canhoto} />}
-        {aba === 'aprender' && <Aprender espelhar={espelhar} />}
+        <ErrorBoundary chave={aba}>
+          {aba === 'sinais' && <SinaisParaVoz />}
+          {aba === 'portugues' && <PortuguesParaLibras canhoto={canhoto} />}
+          {aba === 'aprender' && <Aprender espelhar={espelhar} />}
+          {aba === 'dicionario' && <Dicionario canhoto={canhoto} />}
+        </ErrorBoundary>
       </main>
 
       <footer className="foot">

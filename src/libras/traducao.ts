@@ -109,9 +109,10 @@ export function traduzir(texto: string): Traducao {
     notas.push('Pergunta: as sobrancelhas fazem parte da gramática. Franza para "quem/qual/onde/como" e levante para perguntas de sim/não.');
   }
 
-  if (itens.some((i) => i.tipo === 'omitido')) {
-    notas.push('Palavras riscadas não são sinalizadas (artigos, preposições, verbo de ligação). Passe o mouse sobre elas para ver o porquê.');
-  }
+  // Um motivo por nota, com as palavras afetadas (funciona no celular: sem hover).
+  const porMotivo = new Map<string, string[]>();
+  for (const it of itens) if (it.tipo === 'omitido') porMotivo.set(it.motivo, [...(porMotivo.get(it.motivo) ?? []), it.original]);
+  for (const [motivo, ws] of porMotivo) notas.push(`Riscado (${ws.map((w) => `"${w}"`).join(', ')}): ${motivo}`);
   const soletradas = itens.filter((i) => i.tipo === 'soletrar' && !SOLETRACAO_LEXICAL[i.original.toLowerCase()]);
   if (soletradas.length) {
     notas.push(

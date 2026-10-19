@@ -51,7 +51,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .hand-toggle { display: flex; gap: 8px; align-items: center; color: var(--text-2); font-size: 14px; cursor: pointer; }
 
 /* Abas */
-.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
 .tab {
   display: flex; flex-direction: column; gap: 2px; padding: 14px 16px; border-radius: var(--radius);
   background: var(--bg-2); border: 1px solid var(--line); text-decoration: none; color: var(--text-2);
@@ -186,11 +186,14 @@ h3 { font: 700 20px/1.2 var(--font-display); display: flex; align-items: center;
 
 @media (max-width: 900px) {
   .mode-grid { grid-template-columns: 1fr; }
+  .tabs { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 600px) {
   .app { padding: 0 16px 32px; }
-  .tabs { grid-template-columns: 1fr; }
-  .tab { flex-direction: row; justify-content: space-between; align-items: baseline; }
+  .tabs { gap: 6px; }
+  .tab { padding: 10px 12px; }
+  .tab strong { font-size: 15px; }
+  .tab span { display: none; }
   .brand span { font-size: 22px; }
   .stage { aspect-ratio: 3 / 4; }
   .tutorial-stage { min-height: 280px; }
@@ -224,3 +227,12 @@ h3 { font: 700 20px/1.2 var(--font-display); display: flex; align-items: center;
 .notas { display: flex; flex-direction: column; gap: 6px; padding-left: 18px; font-size: 14px; color: var(--text-2); }
 .video-real { display: flex; flex-direction: column; gap: 6px; }
 .video-real video { width: 100%; border-radius: 12px; background: #000; aspect-ratio: 4 / 3; object-fit: cover; }
+
+/* Dicionário */
+.busca { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; min-width: min(100%, 300px); }
+.sinais-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
+.sinal-card { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 6px 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg-2); cursor: pointer; text-align: center; transition: transform 0.12s, border-color 0.12s; }
+.sinal-card:hover { transform: translateY(-2px); border-color: rgba(255, 209, 102, 0.5); }
+.sinal-card.active { border-color: var(--sun); background: var(--panel-2); box-shadow: 0 0 0 2px var(--sun) inset; }
+.sinal-card strong { font: 800 14px/1.2 var(--font-display); letter-spacing: 0.03em; }
+.sign-thumb { width: 100%; aspect-ratio: 400 / 440; }

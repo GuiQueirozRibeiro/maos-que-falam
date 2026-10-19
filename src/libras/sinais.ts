@@ -61,6 +61,10 @@ export interface Sinal {
   fontes: Fonte[];
   /** Pronome interrogativo (vai para o fim da pergunta). */
   interrogativo?: boolean;
+  /** Sinal de duas mãos que se encontram no meio (palmas unidas, pontas se tocando). */
+  juntas?: 'palmas' | 'pontas';
+  /** Inclinação (rad) das mãos em direção ao meio do corpo — o "telhado" de CASA. */
+  inclina?: number;
   /** Só vale em perguntas ("como?" = COMO; fora de pergunta, "como" = COMER). */
   soEmPergunta?: boolean;
 }
@@ -120,7 +124,7 @@ export const SINAIS: Sinal[] = [
     confianca: 'alta', fontes: [ines('obrigado1Sm_Prog001.mp4'), sb('AGRADECER')],
   },
   {
-    palavras: ['por favor'], glosa: 'POR-FAVOR', config: 'B', local: 'centro', palma: 'lado', direcao: 'cima',
+    palavras: ['por favor'], glosa: 'POR-FAVOR', config: 'B', local: 'centro', palma: 'lado', direcao: 'cima', juntas: 'palmas',
     movimento: 'palmas unidas, como quem reza, com leve balanço', trajeto: [], repete: 2,
     duasMaos: { tipo: 'simetrica', config: 'B', local: 'centro', palma: 'lado' }, expressao: 'súplica',
     descricao: 'As duas mãos abertas, palmas unidas como quem reza, diante do peito. O INES mostra uma variante com as mãos abertas apoiadas no peito.',
@@ -160,6 +164,7 @@ export const SINAIS: Sinal[] = [
   },
   {
     palavras: ['casa', 'casas', 'lar', 'morar', 'moro', 'mora'], glosa: 'CASA', config: 'B', local: 'centro', palma: 'lado', direcao: 'cima',
+    juntas: 'pontas', inclina: 0.5,
     movimento: 'as pontas dos dedos das duas mãos se tocam formando um telhado', trajeto: [], repete: 2,
     duasMaos: { tipo: 'simetrica', config: 'B', local: 'centro', palma: 'lado' }, expressao: null,
     descricao: 'As duas mãos abertas, dedos juntos e inclinados, pontas dos dedos se tocando diante do peito como um telhado. O mesmo sinal significa MORAR.',
@@ -202,7 +207,7 @@ export const SINAIS: Sinal[] = [
     confianca: 'alta', fontes: [ines('aprenderSm_Prog001.mp4'), sb('APRENDER')],
   },
   {
-    palavras: ['entender', 'entendo', 'entende', 'compreender'], glosa: 'ENTENDER', config: 'B', local: 'testa', palma: 'baixo', direcao: 'lado',
+    palavras: ['entender', 'entendo', 'entende', 'compreender'], glosa: 'ENTENDER', config: 'B', local: 'lado-cabeca', palma: 'baixo', direcao: 'lado',
     movimento: 'as pontas dos dedos tocam a lateral da testa (têmpora)', trajeto: [], repete: 1, duasMaos: null, expressao: null,
     descricao: 'Mão aberta com os dedos juntos; as pontas dos dedos tocam a lateral da testa, perto da têmpora.',
     confianca: 'alta', fontes: [ines('entenderSm_Prog001.mp4'), sb('ENTENDER')],

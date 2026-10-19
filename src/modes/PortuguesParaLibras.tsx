@@ -1,22 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatedLetter } from '../components/HandFigure';
 import { SignStage } from '../components/SignStage';
+import { SinalInfo } from '../components/SinalInfo';
 import { VLibrasButton } from '../components/VLibrasButton';
 import { POR_LETRA } from '../libras/alphabet';
 import { cenaInicial, duracao, misturar, passosDe, quadro, type Passo, type Quadro } from '../libras/cena';
-import type { Local, Sinal } from '../libras/sinais';
 import { traduzir } from '../libras/traducao';
 import { falar } from '../speech/tts';
 
 const EXEMPLOS = ['Meu nome é Ana', 'Eu sou surdo', 'Como você está?', 'Eu amo minha família', 'Quero aprender Libras', 'Boa noite, obrigado!'];
 const TRANS_MS = 420;
 
-const NOME_LOCAL: Record<Local, string> = {
-  testa: 'testa', olhos: 'olhos', nariz: 'nariz', boca: 'boca', queixo: 'queixo', bochecha: 'bochecha',
-  orelha: 'orelha', 'lado-cabeca': 'lado da cabeça', pescoco: 'pescoço', peito: 'peito', ombro: 'ombro',
-  frente: 'espaço à frente do corpo', barriga: 'barriga', centro: 'diante do peito, no meio',
-};
-const NOME_PALMA = { frente: 'para a frente', tras: 'para o corpo', lado: 'para o lado', baixo: 'para baixo', cima: 'para cima' };
 
 export function PortuguesParaLibras({ canhoto }: { canhoto: boolean }) {
   const [texto, setTexto] = useState('Meu nome é Ana');
@@ -198,26 +191,6 @@ export function PortuguesParaLibras({ canhoto }: { canhoto: boolean }) {
   );
 }
 
-/** Vídeo real do INES: a referência de verdade, ao lado da animação didática. */
-function VideoReal({ sinal }: { sinal: Sinal }) {
-  const [aberto, setAberto] = useState(false);
-  const video = sinal.fontes.find((f) => f.video)?.video;
-  useEffect(() => setAberto(false), [sinal]);
-  if (!video) return null;
-  return aberto ? (
-    <figure className="video-real">
-      <video src={video} autoPlay loop muted playsInline controls />
-      <figcaption className="small muted">
-        Dicionário de Libras do INES. Vista de frente: a mão direita de quem sinaliza aparece à sua esquerda.
-      </figcaption>
-    </figure>
-  ) : (
-    <button className="btn" onClick={() => setAberto(true)}>
-      ▶ Ver uma pessoa fazendo este sinal (vídeo do INES)
-    </button>
-  );
-}
-
 function Detalhe({ passo }: { passo: Passo | undefined }) {
   if (!passo) return <p className="muted">Digite algo para ver o tutorial.</p>;
   if (passo.tipo === 'pausa') return <p className="muted">Pausa curta entre a palavra soletrada e o próximo sinal.</p>;
@@ -236,57 +209,5 @@ function Detalhe({ passo }: { passo: Passo | undefined }) {
       </div>
     );
   }
-  const s = passo.sinal;
-  const letraCM = POR_LETRA[s.config] ? s.config : null;
-  return (
-    <div className="howto">
-      <h3>
-        {s.glosa}
-        <span className={`badge ${s.confianca === 'alta' ? '' : 'badge-warn'}`}>
-          {s.confianca === 'alta' ? 'conferido' : 'verifique'}
-        </span>
-      </h3>
-      <p>{s.descricao}</p>
-      <dl className="params">
-        <dt>Configuração de mão</dt>
-        <dd className="row">
-          {letraCM && <AnimatedLetter letra={letraCM} className="param-hand" playing={false} />}
-          {letraCM ? `mão em ${letraCM}` : s.config === '5' ? 'mão aberta, dedos afastados' : s.config === '1' ? 'só o indicador esticado' : s.config}
-        </dd>
-        <dt>Onde</dt>
-        <dd>{NOME_LOCAL[s.local]}</dd>
-        <dt>Palma</dt>
-        <dd>{NOME_PALMA[s.palma]}</dd>
-        <dt>Movimento</dt>
-        <dd>{s.movimento}</dd>
-        {s.duasMaos && (
-          <>
-            <dt>Outra mão</dt>
-            <dd>{s.duasMaos.tipo === 'simetrica' ? 'faz o mesmo, espelhado' : `parada, mão em ${s.duasMaos.config}, como apoio`}</dd>
-          </>
-        )}
-        {s.expressao && (
-          <>
-            <dt>Expressão</dt>
-            <dd>{s.expressao}</dd>
-          </>
-        )}
-      </dl>
-      {s.confianca !== 'alta' && (
-        <p className="tip">Encontramos uma só fonte para este sinal. Confira no dicionário do INES, porque pode haver variação regional.</p>
-      )}
-      <VideoReal sinal={s} />
-      <p className="small muted">
-        Fontes:{' '}
-        {s.fontes.map((f, i) => (
-          <span key={i}>
-            {i > 0 && ' · '}
-            <a href={f.video ?? f.url} target="_blank" rel="noreferrer">
-              {f.nome}
-            </a>
-          </span>
-        ))}
-      </p>
-    </div>
-  );
+  return <SinalInfo sinal={passo.sinal} />;
 }

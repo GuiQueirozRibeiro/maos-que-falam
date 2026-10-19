@@ -1,6 +1,6 @@
 import { POR_LETRA } from './alphabet';
 import { getConfig } from './configs';
-import { lerp, type Pt } from './geom';
+import { lerp, rotZ, type Pt } from './geom';
 import { buildPose, poseAt } from './poses';
 import type { Local, Sinal } from './sinais';
 import type { Traducao } from './traducao';
@@ -149,7 +149,11 @@ export function quadro(p: Passo, k: number, anterior?: Quadro): Quadro {
 
   const poseDe = (config: string, direcao = s.direcao, palma = s.palma) => {
     const cfg = getConfig(config);
-    return { cfg, pts: buildPose({ ...cfg.forma, direcao }, { ...cfg.opts, palma }) };
+    let pts = buildPose({ ...cfg.forma, direcao }, { ...cfg.opts, palma });
+    // +x no mundo = rumo ao meio do corpo nas duas mãos (espelho), então a
+    // mesma rotação inclina ambas para o centro.
+    if (s.inclina) pts = pts.map((q) => rotZ(q, s.inclina!));
+    return { cfg, pts };
   };
   const { cfg, pts: ptsIni } = poseDe(s.config);
   let pts = ptsIni;
@@ -160,8 +164,11 @@ export function quadro(p: Passo, k: number, anterior?: Quadro): Quadro {
     const b = reps > 1 ? Math.sin(Math.PI * c) : ease(Math.min(1, k * 1.2));
     pts = ptsIni.map((q, i) => lerp(q, fim[i], b));
   }
-  const ancora = ancoraDe(ptsIni, cfg.contato, s.local);
+  const ancora = s.juntas === 'pontas' ? ptsIni[12] : ancoraDe(ptsIni, cfg.contato, s.local);
   let [lx, ly] = LOCAIS[s.local];
+  // Mãos que se encontram: cada uma encosta no meio do corpo.
+  const meio = s.juntas === 'pontas' ? 3 : s.juntas === 'palmas' ? 9 : null;
+  if (meio !== null) lx = CENA_W / 2 + meio;
   const apoio = s.duasMaos?.tipo === 'apoio';
   // Com mão de apoio, a dominante trabalha logo acima dela, no meio.
   if (apoio) [lx, ly] = [212, LOCAIS[s.duasMaos!.local][1] - MAO_PX * 0.5];
@@ -190,8 +197,8 @@ export function quadro(p: Passo, k: number, anterior?: Quadro): Quadro {
       const optsAnim = s.configFinal ? pts : opts;
       maos.push({
         pts: optsAnim,
-        ancora: ancoraDe(opts, ocfg.contato, o.local),
-        x: CENA_W - ox - dx,
+        ancora: s.juntas === 'pontas' ? opts[12] : ancoraDe(opts, ocfg.contato, o.local),
+        x: meio !== null ? CENA_W / 2 - meio - dx : CENA_W - ox - dx,
         y: oy + dy,
         espelhar: false,
         opacidade: 1,
