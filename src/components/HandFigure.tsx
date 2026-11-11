@@ -5,7 +5,7 @@ import { poseAt } from '../libras/poses';
 
 /* ─── Mão ilustrada (SVG) a partir dos 21 pontos 3D ─────────────────────
  * Ossos como cápsulas, desenhados do mais distante ao mais próximo
- * (algoritmo do pintor), com contorno — é o que deixa legível quem está
+ * (algoritmo do pintor), com contorno: é o que deixa legível quem está
  * na frente de quem (polegar do S, dedos cruzados do R).
  */
 

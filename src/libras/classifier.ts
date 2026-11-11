@@ -19,7 +19,7 @@ const gauss = (x: number, c: number, w: number) => Math.exp(-(((x - c) / w) ** 2
 
 /**
  * Protótipos do polegar (lateral, altura) medidos nas próprias poses
- * sintéticas — assim gerador e classificador nunca divergem.
+ * sintéticas: assim gerador e classificador nunca divergem.
  */
 const THUMB_PROTO: Record<Exclude<ThumbPose, 'toca'>, [number, number]> = (() => {
   const fist = { indicador: 'dobrado', medio: 'dobrado', anelar: 'dobrado', minimo: 'dobrado', direcao: 'cima' } as const;
@@ -73,7 +73,7 @@ export function scoreShape(shape: HandShape, f: HandFeatures): number {
     // com um deles dobrado o ângulo medido explode (~140°) e não diz nada.
     const ambosRetos = f.curl[0] < 0.3 && f.curl[1] < 0.3;
     const afastado = smoothstep(9, 20, f.aberturaIM);
-    // Dedos cruzados divergem naturalmente — no R a abertura não conta.
+    // Dedos cruzados divergem naturalmente: no R a abertura não conta.
     if (!shape.cruzados) add(!ambosRetos ? 0.3 : shape.afastados ? afastado : 1 - afastado, 1.2);
     const cruzado = smoothstep(-0.03, 0.08, f.cruzamento);
     add(shape.cruzados ? cruzado : 1 - cruzado, 1.2);

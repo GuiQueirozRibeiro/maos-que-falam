@@ -14,7 +14,7 @@ export interface Recognition {
   features: HandFeatures;
   /** Letra de movimento detectada neste quadro (J, Ç, H, K, X, Z). */
   movimento: string | null;
-  /** Texto para mostrar ("A", "H ou K — faça o movimento"). */
+  /** Texto para mostrar ("A", "H ou K: faça o movimento"). */
   rotulo: string;
   /** Deslize lateral mantendo a forma (pedido de letra dobrada). */
   deslize: boolean;

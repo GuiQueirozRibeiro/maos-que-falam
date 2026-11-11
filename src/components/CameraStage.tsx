@@ -4,7 +4,7 @@ import { useHandCamera } from '../vision/useHandCamera';
 
 /* ─── Vídeo espelhado + esqueleto da mão ─────────────────────────────────
  * O canvas tem o tamanho NATIVO do vídeo e recebe o mesmo object-fit:cover
- * e o mesmo espelhamento por CSS — assim o navegador recorta os dois
+ * e o mesmo espelhamento por CSS. Assim o navegador recorta os dois
  * igualmente e o esqueleto fica alinhado sem conta de recorte.
  */
 

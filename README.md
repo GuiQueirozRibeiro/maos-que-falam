@@ -59,6 +59,14 @@ entre fontes: TUDO BEM, DIA, TARDE, ONDE, QUAL e PRAZER.
 `public/v1.0.1/` foi copiado do gesture-synth-weld e tem cache immutable de 1 ano. Ao atualizar,
 crie `public/vX.Y.Z/` novo e mude o caminho em `src/vision/handTracker.ts`. Nunca sobrescreva o diretório antigo.
 
+## O que falta
+
+- **Testar o reconhecimento com mãos reais.** Os limiares foram validados só com poses sintéticas
+  (`classifier.test.ts`). O par F/T é o mais difícil.
+- **Sinais sem fonte consistente.** TUDO BEM, DIA, TARDE, ONDE, QUAL e PRAZER ficaram de fora porque o
+  INES e o Signbank divergem. Por isso "bom dia" sai como `BOM D-I-A`.
+- **Revisão por pessoas surdas ou intérpretes** antes de divulgar como material didático.
+
 ## Licença e créditos
 
 MIT. Veja `LICENSE`. O pipeline de câmera foi adaptado do

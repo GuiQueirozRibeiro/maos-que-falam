@@ -38,7 +38,7 @@ export class MotionTracker {
   }
 
   /**
-   * Deslize lateral curto mantendo a forma `base` — é assim que se faz
+   * Deslize lateral curto mantendo a forma `base`. É assim que se faz
    * letra dobrada em Libras ("CARRO": o R desliza para o lado). Olha só os
    * últimos ~450 ms: deslocamento horizontal ≥ 0,4 palma, quase sem
    * deslocamento vertical, e a forma não mudou no caminho.

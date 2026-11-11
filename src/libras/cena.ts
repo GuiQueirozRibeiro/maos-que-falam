@@ -15,7 +15,7 @@ export const CENA_W = 400;
 export const CENA_H = 440;
 /** Escala mundo → cena: a mão (~19 cm) fica proporcional à cabeça desenhada. */
 export const PX_POR_M = 620;
-/** "Uma largura de mão" em px — unidade dos trajetos do dicionário. */
+/** "Uma largura de mão" em px: unidade dos trajetos do dicionário. */
 export const MAO_PX = 0.085 * PX_POR_M;
 
 const LOCAIS: Record<Local, [number, number]> = {

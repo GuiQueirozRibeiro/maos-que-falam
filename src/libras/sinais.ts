@@ -6,13 +6,13 @@ import type { Palma } from './poses';
  *   CM (config), ponto de articulação (local), orientação da palma,
  *   movimento (trajeto/repete) e expressão não-manual.
  * Só entram sinais conferidos em fontes públicas (ver `fontes`). Na dúvida,
- * a palavra fica fora e é soletrada — melhor que ensinar um sinal errado.
+ * a palavra fica fora e é soletrada: melhor que ensinar um sinal errado.
  */
 
 export type Local =
   | 'testa' | 'olhos' | 'nariz' | 'boca' | 'queixo' | 'bochecha' | 'orelha'
   | 'lado-cabeca' | 'pescoco' | 'peito' | 'ombro' | 'frente' | 'barriga'
-  /** Diante do peito, no meio — onde as duas mãos se encontram (CASA, POR FAVOR). */
+  /** Diante do peito, no meio, onde as duas mãos se encontram (CASA, POR FAVOR). */
   | 'centro';
 
 export interface Fonte {
@@ -63,7 +63,7 @@ export interface Sinal {
   interrogativo?: boolean;
   /** Sinal de duas mãos que se encontram no meio (palmas unidas, pontas se tocando). */
   juntas?: 'palmas' | 'pontas';
-  /** Inclinação (rad) das mãos em direção ao meio do corpo — o "telhado" de CASA. */
+  /** Inclinação (rad) das mãos em direção ao meio do corpo: o "telhado" de CASA. */
   inclina?: number;
   /** Só vale em perguntas ("como?" = COMO; fora de pergunta, "como" = COMER). */
   soEmPergunta?: boolean;

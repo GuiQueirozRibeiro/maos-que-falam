@@ -45,7 +45,7 @@ export type SpellerEvent = { tipo: 'letra'; letra: string } | { tipo: 'palavra';
 
 export class Speller {
   texto = '';
-  /** 0..1 — progresso do "segurar" para a UI desenhar o anel. */
+  /** 0..1: progresso do "segurar" para a UI desenhar o anel. */
   progresso = 0;
   candidato: string | null = null;
 

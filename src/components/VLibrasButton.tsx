@@ -3,7 +3,7 @@ import { useState } from 'react';
 /* ─── VLibras (Governo Federal) ──────────────────────────────────────────
  * Tradutor oficial português → Libras com avatar 3D. Datilologia serve
  * para nomes e palavras sem sinal; FRASES em Libras têm gramática própria
- * (ordem, expressões faciais, classificadores) — para isso usamos o VLibras.
+ * (ordem, expressões faciais, classificadores). Para isso usamos o VLibras.
  * O script só é carregado quando a pessoa pede (privacidade + desempenho).
  */
 

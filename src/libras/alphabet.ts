@@ -8,20 +8,20 @@
  *     como ela mesma).
  *
  * Descrições conferidas com materiais didáticos públicos (libras.com.br,
- * certificadocursosonline.com). Existem variações regionais — o
+ * certificadocursosonline.com). Existem variações regionais. O
  * Dicionário de Libras do INES é a referência para dúvidas.
  */
 
 export type FingerState = 'estendido' | 'curvado' | 'dobrado';
 
 /**
- *  aberto  — polegar afastado da mão, apontando para o lado (L, Y)
- *  lado    — encostado na lateral de fora do indicador (A, G, F, Q)
- *  sobre   — atravessado na frente da palma / segurando os dedos (B, S, I…)
- *  toca    — a ponta encosta na ponta de outro dedo, formando um círculo (O, D)
- *  oposto  — curvado de frente para os dedos, sem encostar (C)
- *  entre   — ponta entre o indicador e o médio (H, K, P)
- *  dentro  — recolhido por dentro do indicador dobrado (T)
+ *  aberto: polegar afastado da mão, apontando para o lado (L, Y)
+ *  lado: encostado na lateral de fora do indicador (A, G, F, Q)
+ *  sobre: atravessado na frente da palma / segurando os dedos (B, S, I…)
+ *  toca: a ponta encosta na ponta de outro dedo, formando um círculo (O, D)
+ *  oposto: curvado de frente para os dedos, sem encostar (C)
+ *  entre: ponta entre o indicador e o médio (H, K, P)
+ *  dentro: recolhido por dentro do indicador dobrado (T)
  */
 export type ThumbPose = 'aberto' | 'lado' | 'sobre' | 'toca' | 'oposto' | 'entre' | 'dentro';
 
@@ -263,14 +263,14 @@ export const MOVIMENTOS_POR_BASE: Record<string, string[]> = {
 
 /** Nome amigável da forma-base mostrado quando falta o movimento. */
 export const ROTULO_BASE: Record<string, string> = {
-  HK: 'H ou K — faça o movimento',
-  XZ: 'X ou Z — faça o movimento',
+  HK: 'H ou K: faça o movimento',
+  XZ: 'X ou Z: faça o movimento',
 };
 
 /**
  * Converte texto em português para a sequência de letras soletráveis.
  * Acentos: na datilologia a letra é feita sem o acento (o acento é traçado
- * no ar em alguns contextos — aqui marcamos `acento` para o tutorial avisar).
+ * no ar em alguns contextos. Aqui marcamos `acento` para o tutorial avisar).
  */
 export function paraLetras(texto: string): { letra: string; original: string; acento: boolean }[] {
   const out: { letra: string; original: string; acento: boolean }[] = [];

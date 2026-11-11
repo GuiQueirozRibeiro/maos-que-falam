@@ -8,7 +8,7 @@ import type { HandLandmarker, HandLandmarkerResult } from '@mediapipe/tasks-visi
  *    que o reconhecimento de letras usa. Os landmarks normalizados ficam só
  *    para desenhar o esqueleto sobre o vídeo.
  *  - Fonte única: mesmo domínio (/v1.0.1/). Ao trocar de versão, crie um
- *    diretório novo — os arquivos têm cache immutable de 1 ano (vercel.json).
+ *    diretório novo: os arquivos têm cache immutable de 1 ano (vercel.json).
  */
 
 const MODEL = { wasm: '/v1.0.1/wasm', task: '/v1.0.1/hand_landmarker.task' } as const;
@@ -20,9 +20,9 @@ export interface Pt {
 }
 
 export interface DetectedHand {
-  /** Coordenadas normalizadas na imagem (0..1) — para desenhar. */
+  /** Coordenadas normalizadas na imagem (0..1), para desenhar. */
   image: Pt[];
-  /** Coordenadas 3D em metros, centradas na mão — para classificar. */
+  /** Coordenadas 3D em metros, centradas na mão, para classificar. */
   world: Pt[];
   label: 'Left' | 'Right';
 }
